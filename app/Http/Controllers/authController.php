@@ -105,7 +105,7 @@ class authController extends Controller
         unset($user->password);
 
         // load company user
-       // $user->load('companies');
+       $user->load('companies');
 
         return Controller::response(200, false, $message = 'Login', $user);
     }
