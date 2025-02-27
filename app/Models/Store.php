@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Carbon\Traits\LocalFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Store extends Model
 {
@@ -28,7 +29,7 @@ class Store extends Model
     }
 
     // relation with ProductStore
-    public function products()
+    public function products(): HasMany
     {
         return $this->hasMany(ProductStore::class, 'id_store', 'id_store')->select(['id_product', 'id_store', 'name', 'description', 'price', 'stock', 'status']);
     }

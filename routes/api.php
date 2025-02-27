@@ -26,7 +26,7 @@ Route::controller(authController::class)->group(function () {
 
 Route::middleware(['auth:sanctum', 'throttle:user_actions'])->group(function () {
     Route::controller(storeController::class)
-        ->middleware(CheckTypeCompany::class . ':2') // Middleware agregado correctamente
+        ->middleware(CheckTypeCompany::class . ':2') // Seller
         ->group(function () {
             Route::get('/stores', 'allBySeller');
             Route::get('/stores/{id}', 'show');
@@ -36,7 +36,7 @@ Route::middleware(['auth:sanctum', 'throttle:user_actions'])->group(function () 
         });
 
     Route::controller(productsController::class)
-        ->middleware(CheckTypeCompany::class . ':2') // Middleware agregado correctamente con parámetro
+        ->middleware(CheckTypeCompany::class . ':2') // Seller
         ->group(function () {
             Route::get('/products', 'allBySeller');
             Route::get('/products/store/{id}', 'allByStore');
@@ -47,11 +47,11 @@ Route::middleware(['auth:sanctum', 'throttle:user_actions'])->group(function () 
         });
 
     Route::controller(cartController::class)
-        ->middleware(CheckTypeCompany::class . ':1') // Middleware agregado correctamente con parámetro
+        ->middleware(CheckTypeCompany::class . ':1') // customer
         ->group(function () {
-            Route::get('/carts/all', 'allByCustomers');
             Route::get('/carts', 'current');
             Route::post('/carts', 'addProduct');
             Route::delete('/carts', 'deleteProduct');
+            Route::post('/carts/buy', 'buy');
         });
 });

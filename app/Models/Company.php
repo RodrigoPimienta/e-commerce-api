@@ -45,7 +45,7 @@ class Company extends Model
     // reation with Cart
     public function carts(): HasMany
     {
-        return $this->hasMany(Cart::class, 'id_company', 'id_company')->select(['id_cart', 'id_company', 'status']);
+        return $this->hasMany(Cart::class, 'id_company', 'id_company')->select(['id_cart', 'id_company', 'status', 'total_price', 'bought_at']);
     }
 
 }
