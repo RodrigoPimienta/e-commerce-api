@@ -13,11 +13,13 @@ class authController extends Controller
     public function register(Request $request)
     {
         $request = (object) $request->validate([
-            "email"        => "required|email|unique:companies",
-            'name'         => 'required|max:255',
-            'last_name'    => 'nullable|max:255',
-            'address'      => 'required|max:255',
-            'company_type' => 'required|integer|in:1,2',
+            "email"                 => "required|email|unique:companies",
+            'name'                  => 'required|max:255',
+            'last_name'             => 'nullable|max:255',
+            'address'               => 'required|max:255',
+            'company_type'          => 'required|integer|in:1,2',
+            'password'              => 'required|confirmed',
+            'password_confirmation' => 'required',
         ]);
 
         DB::beginTransaction();
@@ -39,12 +41,10 @@ class authController extends Controller
 
         // create user
         // generate random password
-        $randomPassword = Controller::randomPassword();
-
         $user = User::create([
             'name'       => $request->name,
             'email'      => $request->email,
-            'password'   => bcrypt($randomPassword),
+            'password'   => bcrypt($request->password),
             'created_at' => now(),
         ]);
 
@@ -70,8 +70,6 @@ class authController extends Controller
 
         $dataReturn = [
             'username' => $request->email,
-            'password' => $randomPassword,
-            'company'  => $company,
         ];
 
         DB::commit();
@@ -105,7 +103,7 @@ class authController extends Controller
         unset($user->password);
 
         // load company user
-       $user->load('companies');
+        $user->load('companies');
 
         return Controller::response(200, false, $message = 'Login', $user);
     }

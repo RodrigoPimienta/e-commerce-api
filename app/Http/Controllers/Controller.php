@@ -12,9 +12,4 @@ abstract class Controller
             'data'    => $data,
         ], $status);
     }
-
-    public function randomPassword(): string
-    {
-        return substr(str_shuffle('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*'), 0, 10);
-    }
 }
