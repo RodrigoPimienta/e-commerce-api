@@ -5,6 +5,7 @@ use Carbon\Traits\LocalFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 
 class Company extends Model
 {
@@ -38,6 +39,13 @@ class Company extends Model
     public function stores(): HasMany
     {
         return $this->hasMany(Store::class, 'id_company', 'id_company')->select(['id_store', 'id_company', 'name', 'address', 'status']);
+    }
+
+
+    // reation with Cart
+    public function carts(): HasMany
+    {
+        return $this->hasMany(Cart::class, 'id_company', 'id_company')->select(['id_cart', 'id_company', 'status']);
     }
 
 }

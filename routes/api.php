@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\cartController;
 use App\Http\Controllers\Api\productsController;
 use App\Http\Controllers\Api\storeController;
 use App\Http\Controllers\authController;
@@ -43,5 +44,14 @@ Route::middleware(['auth:sanctum', 'throttle:user_actions'])->group(function () 
             Route::post('/products', 'store');
             Route::put('/products/{id}', 'update');
             Route::patch('/products/{id}/status', 'updateStatus');
+        });
+
+    Route::controller(cartController::class)
+        ->middleware(CheckTypeCompany::class . ':1') // Middleware agregado correctamente con parámetro
+        ->group(function () {
+            Route::get('/carts/all', 'allByCustomers');
+            Route::get('/carts', 'current');
+            Route::post('/carts', 'addProduct');
+            Route::delete('/carts', 'deleteProduct');
         });
 });
