@@ -23,6 +23,13 @@ class cartController extends Controller implements HasMiddleware
         ];
     }
 
+    public function allByCustomers(Request $request)
+    {
+        $userCompany = $request->user()->companies()->first();
+        $carts       = $userCompany->carts()->get()->where('status', 2)->load('products');
+
+        return Controller::response(200, false, $message = 'Bought carts', $carts);
+    }
 
     public function current(Request $request)
     {

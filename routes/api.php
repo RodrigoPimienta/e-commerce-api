@@ -49,6 +49,7 @@ Route::middleware(['auth:sanctum', 'throttle:user_actions'])->group(function () 
     Route::controller(cartController::class)
         ->middleware(CheckTypeCompany::class . ':1') // customer
         ->group(function () {
+            Route::get('/carts/all', 'allByCustomers');
             Route::get('/carts', 'current');
             Route::post('/carts', 'addProduct');
             Route::delete('/carts', 'deleteProduct');
