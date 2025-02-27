@@ -29,6 +29,8 @@ Route::middleware(['auth:sanctum', 'throttle:user_actions'])->group(function () 
         ->middleware(CheckTypeCompany::class . ':2') // Seller
         ->group(function () {
             Route::get('/stores', 'allBySeller');
+            Route::get('/stores/sells', 'allSellsBySeller');
+            Route::get('/stores/{id}/sells', 'allSellsByStore');
             Route::get('/stores/{id}', 'show');
             Route::post('/stores', 'store');
             Route::put('/stores/{id}', 'update');
@@ -51,6 +53,7 @@ Route::middleware(['auth:sanctum', 'throttle:user_actions'])->group(function () 
         ->group(function () {
             Route::get('/carts/all', 'allByCustomers');
             Route::get('/carts', 'current');
+            Route::get('/carts/{id}', 'getCart');
             Route::post('/carts', 'addProduct');
             Route::delete('/carts', 'deleteProduct');
             Route::post('/carts/buy', 'buy');

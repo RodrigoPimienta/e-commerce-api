@@ -2,6 +2,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Cart;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
@@ -9,13 +10,6 @@ use Illuminate\Support\Facades\DB;
 
 class cartController extends Controller implements HasMiddleware
 {
-    private $colums = [
-        'id_cart',
-        'id_company',
-        'updated_at',
-        'status',
-    ];
-
     public static function middleware()
     {
         return [
@@ -29,6 +23,19 @@ class cartController extends Controller implements HasMiddleware
         $carts       = $userCompany->carts()->get()->where('status', 2)->load('products');
 
         return Controller::response(200, false, $message = 'Bought carts', $carts);
+    }
+
+    public function getCart(Request $request, int $id)
+    {
+        $userCompany = $request->user()->companies()->first();
+        $currentCart = $userCompany->carts()->where('id_cart', $id)->first();
+
+        if (! $currentCart) {
+            return Controller::response(404, true, $message = 'Cart not found');
+        }
+
+        $cart = $currentCart->load('products');
+        return Controller::response(200, false, $message = 'Current cart', $cart);
     }
 
     public function current(Request $request)
@@ -151,6 +158,7 @@ class cartController extends Controller implements HasMiddleware
             $currentCart->update([
                 'status'      => 2,
                 'total_price' => $totalPrice,
+                'total_items' => $products->sum('pivot.quantity'),
                 'bought_at'   => now(),
             ]);
 

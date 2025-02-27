@@ -19,6 +19,7 @@ class Cart extends Model
     protected $fillable = [
         'status',
         'total_price', 
+        'total_items',
         'bought_at'
     ];
 

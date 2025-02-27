@@ -13,7 +13,9 @@ return new class extends Migration
     {
         Schema::table('carts', function (Blueprint $table) {
             $table->decimal('total_price', 10, 2)->nullable();
+            $table->integer('total_items')->nullable();
             $table->dateTime('bought_at')->nullable();
+
         });
     }
 
@@ -24,6 +26,7 @@ return new class extends Migration
     {
         Schema::table('carts', function (Blueprint $table) {
             $table->dropColumn('total_price');
+            $table->dropColumn('total_items');
             $table->dropColumn('bought_at');
         });
     }
